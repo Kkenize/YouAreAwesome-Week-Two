@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AVFAudio
 
 struct ContentView: View {
     @State private var imageName = ""
@@ -18,10 +19,16 @@ struct ContentView: View {
     @State private var lastMessageRandomer = 0
     @State private var imageCount = 0
     @State private var messageCount = 0
+    @State private var audioPlayer: AVAudioPlayer!
+    @State private var soundName = ""
+    @State private var soundRandomer = 0
+    @State private var lastSoundRandomer = -1
+    
     var body: some View {
         //        let message1 = "You are awesome!"
         //        let message2 = "You are great!"
         let messages = ["You are awesome!", "You are great!", "You are amazing!", "You are incredible!", "You are fantastic!", "You are perfect!", "You are the best!", "You are the GOAT!", "You are dazzling!"]
+        let numberOfImages = 9
         
         VStack {
             
@@ -34,6 +41,8 @@ struct ContentView: View {
                 .animation(.easeInOut(duration: 0.15), value: messageString)
                 .frame(height: 100)
             
+            Spacer()
+            
             Image(imageName)
                 .resizable()
                 .scaledToFit()
@@ -44,7 +53,7 @@ struct ContentView: View {
             Spacer()
             
             Button("Show Message") {
-                imageRandomer = Int.random(in: 0...9)
+                imageRandomer = Int.random(in: 0...numberOfImages)
                 
                 if imageCount == 0 {
                     lastImageRandomer = imageRandomer
@@ -53,7 +62,7 @@ struct ContentView: View {
                     imageCount += 1
                 } else {
                     while lastImageRandomer == imageRandomer {
-                        imageRandomer = Int.random(in: 0...9)
+                        imageRandomer = Int.random(in: 0...numberOfImages)
                     }
                     lastImageRandomer = imageRandomer
                     //Note: imageName = "image\(imageNumber)" also works
@@ -72,6 +81,23 @@ struct ContentView: View {
                     lastMessageRandomer = messageRandomer
                     messageString =  messages[messageRandomer]
                     messageCount += 1
+                }
+                
+                repeat {
+                    soundRandomer = Int.random(in: 0...5)
+                } while lastSoundRandomer == soundRandomer
+                soundName = "sound\(soundRandomer)"
+                lastSoundRandomer = soundRandomer
+                guard let soundFile = NSDataAsset(name: soundName) else {
+                    print("Can't find \(soundName)")
+                    return
+                }
+                do {
+                    audioPlayer = try AVAudioPlayer(data: soundFile.data)
+                    audioPlayer.play()
+                } catch {
+                    print("\(error.localizedDescription)")
+                    return
                 }
                 
                 //The code below allows for messages to be displayed in order
