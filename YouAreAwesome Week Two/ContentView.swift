@@ -19,18 +19,21 @@ struct ContentView: View {
         
         VStack {
             
-            Spacer()
+            Text(messageString)
+                .bold()
+                .font(.largeTitle)
+                .foregroundStyle(.yellow)
+                .minimumScaleFactor(0.5)
+                .multilineTextAlignment(.center)
+                .animation(.easeInOut(duration: 0.15), value: messageString)
+                .frame(height: 100)
             
             Image(imageName)
                 .resizable()
                 .scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: 50))
+                .animation(.default, value: imageName)
                 .shadow(radius: 50)
-            Text(messageString)
-                .bold()
-                .font(.largeTitle)
-                .foregroundStyle(.yellow)
-                .multilineTextAlignment(.center)
             
             Spacer()
             
