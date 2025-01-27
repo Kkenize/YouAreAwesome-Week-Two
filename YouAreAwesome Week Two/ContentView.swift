@@ -27,6 +27,7 @@ struct ContentView: View {
     var body: some View {
         //        let message1 = "You are awesome!"
         //        let message2 = "You are great!"
+        
         let messages = ["You are awesome!", "You are great!", "You are amazing!", "You are incredible!", "You are fantastic!", "You are perfect!", "You are the best!", "You are the GOAT!", "You are dazzling!"]
         let numberOfImages = 9
         
