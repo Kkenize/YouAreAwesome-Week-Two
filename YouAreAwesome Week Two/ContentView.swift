@@ -10,13 +10,11 @@ import AVFAudio
 
 struct ContentView: View {
     @State private var imageName = ""
-    //    @State private var imageNumber = 0
     @State private var imageRandomer = 0
-    @State private var lastImageRandomer = 0
+    @State private var lastImageRandomer = -1
     @State private var messageString = ""
-    //    @State private var messageNumber = 0
     @State private var messageRandomer = 0
-    @State private var lastMessageRandomer = 0
+    @State private var lastMessageRandomer = -1
     @State private var imageCount = 0
     @State private var messageCount = 0
     @State private var audioPlayer: AVAudioPlayer!
@@ -54,35 +52,17 @@ struct ContentView: View {
             Spacer()
             
             Button("Show Message") {
-                imageRandomer = Int.random(in: 0...numberOfImages)
+                repeat {
+                    messageRandomer = Int.random(in: 0...messages.count-1)
+                } while lastMessageRandomer == messageRandomer
+                messageString = messages[messageRandomer]
+                lastMessageRandomer = messageRandomer
                 
-                if imageCount == 0 {
-                    lastImageRandomer = imageRandomer
-                    //Note: imageName = "image\(imageNumber)" also works
-                    imageName = "image" + String(imageRandomer)
-                    imageCount += 1
-                } else {
-                    while lastImageRandomer == imageRandomer {
-                        imageRandomer = Int.random(in: 0...numberOfImages)
-                    }
-                    lastImageRandomer = imageRandomer
-                    //Note: imageName = "image\(imageNumber)" also works
-                    imageName = "image" + String(imageRandomer)
-                    imageCount += 1
-                }
-                
-                messageRandomer = Int.random(in: 0...(messages.count-1))
-                if messageCount == 0 {
-                    lastMessageRandomer = messageRandomer
-                    messageCount += 1
-                } else {
-                    while lastMessageRandomer == messageRandomer {
-                        messageRandomer = Int.random(in: 0...(messages.count-1))
-                    }
-                    lastMessageRandomer = messageRandomer
-                    messageString =  messages[messageRandomer]
-                    messageCount += 1
-                }
+                repeat {
+                    imageRandomer = Int.random(in: 0...messages.count-1)
+                } while lastImageRandomer == imageRandomer
+                imageName = "image\(imageRandomer)"
+                lastImageRandomer = imageRandomer
                 
                 repeat {
                     soundRandomer = Int.random(in: 0...5)
@@ -100,19 +80,6 @@ struct ContentView: View {
                     print("\(error.localizedDescription)")
                     return
                 }
-                
-                //The code below allows for messages to be displayed in order
-                //                messageNumber += 1
-                //                if messageNumber == messages.count {
-                //                    messageNumber = 0
-                //                }
-                
-                //                imageName = (imageName == image1 ?9image2 : image1)
-                //                message = (message == message1 ? message2 : message1)
-                //                imageNumber = imageNumber + 1
-                //                imageNumber += 1
-                //                if imageNumber > 9 {
-                //                    imageNumber = 0
             }
             .buttonStyle(.borderedProminent)
             .bold()
