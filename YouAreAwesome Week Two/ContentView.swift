@@ -9,9 +9,11 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var imageName = ""
-    @State private var imageNumber = 0
+//    @State private var imageNumber = 0
+    @State private var imageRandomer = 0
     @State private var messageString = ""
-    @State private var messageNumber = 0
+//    @State private var messageNumber = 0
+    @State private var messageRandomer = 0
     var body: some View {
         //        let message1 = "You are awesome!"
         //        let message2 = "You are great!"
@@ -38,21 +40,27 @@ struct ContentView: View {
             Spacer()
             
             Button("Show Message") {
-                //Note: imageName = "image\(imageNumber)" also works
-                imageName = "image" + String(imageNumber)
+                imageRandomer = Int.random(in: 0...9)
                 
-                messageString = messages[messageNumber]
-                messageNumber += 1
-                if messageNumber == messages.count {
-                    messageNumber = 0
-                }
+                //Note: imageName = "image\(imageNumber)" also works
+                imageName = "image" + String(imageRandomer)
+                
+                messageRandomer = Int.random(in: 0...(messages.count-1))
+                
+                messageString = messages[messageRandomer]
+                
+                //The code below allows for messages to be displayed in order
+//                messageNumber += 1
+//                if messageNumber == messages.count {
+//                    messageNumber = 0
+//                }
+                
                 //                imageName = (imageName == image1 ?9image2 : image1)
                 //                message = (message == message1 ? message2 : message1)
                 //                imageNumber = imageNumber + 1
-                imageNumber += 1
-                if imageNumber > 9 {
-                    imageNumber = 0
-                }
+//                imageNumber += 1
+//                if imageNumber > 9 {
+//                    imageNumber = 0
             }
             .buttonStyle(.borderedProminent)
             .bold()
